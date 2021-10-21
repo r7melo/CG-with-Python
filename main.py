@@ -1,15 +1,11 @@
-import pygame
-from pygame.locals import *
-
-from OpenGL.GL import *
-from OpenGL.GLU import *
-
-from App import App
-from Cube import Cube
+from app import App
+from vector import Vector3d
 
 app = App()
-app.objects_renderes.append(Cube())
 
-app.is_rotate = True
-app.rotate = (1, 3, 1, 1)
+app.display = (800,800)
+app.fovy = 45
+app.z_near = 1
+app.z_far = 100
+app.translation = Vector3d(0, 0, -5)
 app.run()
