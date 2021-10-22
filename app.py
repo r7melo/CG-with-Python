@@ -6,6 +6,7 @@ from OpenGL.GLU import *
 
 from cube import Cube
 from triangle import Triangle
+from edge import Edge
 from constants import *
 from vector import Vector3d
 
@@ -30,15 +31,18 @@ class App:
         glTranslatef(self.translation.x, self.translation.y, self.translation.z)
 
         #============================================================================
-        cube = Cube()
-        cube.verticies = cuboVerticies
-        cube.faces = cuboFaces
+        cube = Cube(cuboVerticies, cuboFaces)
+
 
         triangle = Triangle(triangleVerticies)
         triangle.color = triangleColor
 
         triangle2 = Triangle(triangle2Verticies)
         triangle2.color = (0.1,1,0)
+
+        edge = Edge(edgeVerticies)
+        edge.color = edgeColor
+        
         #============================================================================
         
         while True:
@@ -67,43 +71,52 @@ class App:
             
             #============================================================================
             
-            #cube.show()
-            triangle.update()
-            triangle2.update()
+            cube.update()
 
-
-            print(triangle.angle.get(), triangle.verticies)
-            
 
             #============================================================================
 
             keys = pygame.key.get_pressed()
         
             if keys[K_w]:
-                triangle.angle.x += 10
-                triangle2.angle.x += 10
+                edge.angle.x += 10
             elif keys[K_s]:
-                triangle.angle.x -= 10
-                triangle2.angle.x -= 10
+                edge.angle.x -= 10
             if keys[K_d]:
-                triangle.angle.y += 10
-                triangle2.angle.y += 10
+                edge.angle.z += 10
             elif keys[K_a]:
-                triangle.angle.y -= 10
-                triangle2.angle.y -= 10
+                edge.angle.z -= 10
             if keys[K_q]:
-                triangle.angle.z += 10
-                triangle2.angle.z += 10
+                edge.angle.y += 10
             elif keys[K_e]:
-                triangle.angle.z -= 10
-                triangle2.angle.z -= 10
+                edge.angle.y -= 10
 
 
-            if keys[K_PAGEUP]:
-                pass
-            elif keys[K_PAGEDOWN]:
-                pass
+            if keys[K_UP]:
+                glRotatef(10,1,0,0)
+            elif keys[K_DOWN]:
+                glRotatef(10,-1,0,0)
+            if keys[K_LEFT]:
+                glRotatef(10,0,1,0)
+            elif keys[K_RIGHT]:
+                glRotatef(10,0,-1,0)
                 
 
             pygame.display.flip()
             pygame.time.wait(100)
+
+
+
+
+if "__main__"==__name__:
+    from app import App
+    from vector import Vector3d
+
+    app = App()
+
+    app.display = (1000,1000)
+    app.fovy = 45
+    app.z_near = 1
+    app.z_far = 100
+    app.translation = Vector3d(0, 0, -5)
+    app.run()

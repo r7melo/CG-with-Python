@@ -4,11 +4,10 @@ from vector import Vector3d
 
 import math
 
-class Cube:
-    def __init__(self, verticies, faces):
+class Edge:
+    def __init__(self, verticies):
         self.__verticies__ = verticies
         self.verticies = verticies
-        self.faces = faces
         self.color = (1,1,1)
         self.angle = Vector3d(0,0,0)
 
@@ -25,13 +24,10 @@ class Cube:
 
 
     def show(self):
-        glBegin(GL_QUADS)
-        for face in self.faces:
-            for vertex in face:
-                if type(vertex) == tuple:
-                    glColor3fv(vertex)
-                elif type(vertex) == int:
-                    glVertex3fv(self.verticies[vertex])
+        glBegin(GL_LINES)
+        for vertex in self.verticies:
+            glColor3fv(self.color)
+            glVertex3fv(vertex)
         glEnd()
         
 
@@ -44,5 +40,7 @@ class Cube:
             self.angle.x = 0
         if abs(self.angle.y) >= 360:
             self.angle.y = 0
+        if abs(self.angle.z) >= 360:
+            self.angle.z = 0
         
         

@@ -13,8 +13,7 @@ cuboVerticies = (
 cuboFaces = (
     ((0.1,0.1,0.1),4,5,6,7),    #1
     ((0,1,1),3,2,6,7),          #2
-    ((1,1,0),0,1,5,4),          #4
-    ((0,1,0),0,1,2,3),          #3
+    ((1,1,1),0,4,7,3),          #5
 )
 
 cuboFacesbc= (
@@ -45,5 +44,12 @@ triangle2Verticies = (
     (1,2,1),
 )
 
+edgeVerticies = (
+    (0,0,0),
+    (1,1,0)
+)
+
+
 squadColor = (0,0,1)
 triangleColor = (0.7,0.1,1)
+edgeColor = (0.5,0.5,0.5)
