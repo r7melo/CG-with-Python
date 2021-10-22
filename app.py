@@ -5,6 +5,7 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 
 from cube import Cube
+from triangle import Triangle
 from constants import *
 from vector import Vector3d
 
@@ -29,9 +30,9 @@ class App:
         glTranslatef(self.translation.x, self.translation.y, self.translation.z)
 
         #============================================================================
-        cube = Cube()
-        cube.verticies = cuboVerticies
-        cube.faces = cuboFaces
+        triangle = Triangle()
+        triangle.color = triangleColor
+        triangle.verticies = triangleVerticies
         #============================================================================
         
         while True:
@@ -45,7 +46,8 @@ class App:
             
             #============================================================================
             
-            cube.update()
+            triangle.show()
+            
 
             #============================================================================
 
@@ -53,16 +55,16 @@ class App:
         
             if keys[K_UP]:
                 glRotatef(1,1,0,0)
-                cube.rotate(1,0,0)
+                triangle.rotate(1,0,0)
             elif keys[K_DOWN]:
                 glRotatef(1,-1,0,0)
-                cube.rotate(-1,0,0)
+                triangle.rotate(-1,0,0)
             if keys[K_RIGHT]:
                 glRotatef(1,0,1,0)
-                cube.rotate(0,1,0)
+                triangle.rotate(0,1,0)
             elif keys[K_LEFT]:
                 glRotatef(1,0,-1,0)
-                cube.rotate(1,-1,0)
+                triangle.rotate(1,-1,0)
 
             if keys[K_q]:
                 glTranslatef(0,0,-0.1)

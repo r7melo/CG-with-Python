@@ -3,7 +3,7 @@ from vector import Vector3d
 
 app = App()
 
-app.display = (800,800)
+app.display = (600,600)
 app.fovy = 45
 app.z_near = 1
 app.z_far = 100
