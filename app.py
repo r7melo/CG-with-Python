@@ -30,9 +30,15 @@ class App:
         glTranslatef(self.translation.x, self.translation.y, self.translation.z)
 
         #============================================================================
-        triangle = Triangle()
+        cube = Cube()
+        cube.verticies = cuboVerticies
+        cube.faces = cuboFaces
+
+        triangle = Triangle(triangleVerticies)
         triangle.color = triangleColor
-        triangle.verticies = triangleVerticies
+
+        triangle2 = Triangle(triangle2Verticies)
+        triangle2.color = (0.1,1,0)
         #============================================================================
         
         while True:
@@ -42,47 +48,62 @@ class App:
                     quit()
 
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            #glRotatef(1, 1,1,0)
+
+            glBegin(GL_LINES)
+            glColor3fv((0,0,0.1))
+            glVertex3fv((0,0,-10))
+            glVertex3fv((0,0,10))
+            
+            glColor3fv((0,0.1,0))
+            glVertex3fv((0,-10,0))
+            glVertex3fv((0,10,0))
+
+            glColor3fv((0.1,0,0))
+            glVertex3fv((-10,0,0))
+            glVertex3fv((10,0,0))
+            glEnd()
             
             
             #============================================================================
             
-            triangle.show()
+            #cube.show()
+            triangle.update()
+            triangle2.update()
+
+
+            print(triangle.angle.get(), triangle.verticies)
             
 
             #============================================================================
 
             keys = pygame.key.get_pressed()
         
-            if keys[K_UP]:
-                glRotatef(1,1,0,0)
-                triangle.rotate(1,0,0)
-            elif keys[K_DOWN]:
-                glRotatef(1,-1,0,0)
-                triangle.rotate(-1,0,0)
-            if keys[K_RIGHT]:
-                glRotatef(1,0,1,0)
-                triangle.rotate(0,1,0)
-            elif keys[K_LEFT]:
-                glRotatef(1,0,-1,0)
-                triangle.rotate(1,-1,0)
-
-            if keys[K_q]:
-                glTranslatef(0,0,-0.1)
-            elif keys[K_e]:
-                glTranslatef(0,0,0.1)
-            
             if keys[K_w]:
-                glTranslatef(0,-0.1,0)
+                triangle.angle.x += 10
+                triangle2.angle.x += 10
             elif keys[K_s]:
-                glTranslatef(0,0.1,0)
+                triangle.angle.x -= 10
+                triangle2.angle.x -= 10
+            if keys[K_d]:
+                triangle.angle.y += 10
+                triangle2.angle.y += 10
+            elif keys[K_a]:
+                triangle.angle.y -= 10
+                triangle2.angle.y -= 10
+            if keys[K_q]:
+                triangle.angle.z += 10
+                triangle2.angle.z += 10
+            elif keys[K_e]:
+                triangle.angle.z -= 10
+                triangle2.angle.z -= 10
 
-            if keys[K_a]:
-                glTranslatef(-0.1,0,0)
-            elif keys[K_d]:
-                glTranslatef(0.1,0,0)
 
-            print
+            if keys[K_PAGEUP]:
+                pass
+            elif keys[K_PAGEDOWN]:
+                pass
                 
 
             pygame.display.flip()
-            pygame.time.wait(10)
+            pygame.time.wait(100)

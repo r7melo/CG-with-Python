@@ -39,5 +39,11 @@ triangleVerticies = (
     (0,1,0),
 )
 
+triangle2Verticies = (
+    (1,1,1),
+    (2,1,1),
+    (1,2,1),
+)
+
 squadColor = (0,0,1)
-triangleColor = (0,1,0)
+triangleColor = (0.7,0.1,1)
