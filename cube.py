@@ -1,3 +1,5 @@
+from app import App
+
 from OpenGL.GL import *
 
 from vector import Vector3d
@@ -43,5 +45,36 @@ class Cube:
             self.angle.x = 0
         if abs(self.angle.y) >= 360:
             self.angle.y = 0
-        
-        
+
+
+cuboVerticies = (
+    (0,0,0),
+    (1,0,0),
+    (1,1,0),
+    (0,1,0),
+
+    (0,0,-1),
+    (1,0,-1),
+    (1,1,-1),
+    (0,1,-1),
+)
+
+cuboFaces = (
+    ((0.1,0.1,0.1),4,5,6,7),    #1
+    ((0,1,1),3,2,6,7),          #2
+    ((1,1,1),0,4,7,3),          #5
+)
+
+cuboFacesbc= (
+    ((1,0,0),0,1,2,3),          #3
+    ((1,1,0),0,1,5,4),          #4
+    ((1,1,1),0,4,7,3),          #5
+    ((0,1,1),3,2,6,7),          #2
+    ((0,0,1),1,2,6,5),          #6
+    ((0.1,0.1,0.1),4,5,6,7),    #1
+)
+
+if __name__=="__main__":
+        app = App()
+        app.render.append(Cube(cuboVerticies, cuboFaces))
+        app.run()

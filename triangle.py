@@ -1,3 +1,5 @@
+from app import App
+
 from OpenGL.GL import *
 
 from vector import Vector3d
@@ -47,3 +49,27 @@ class Triangle:
             self.angle.z = 0
         
         
+
+
+triangleVerticies = (
+    (0,0,0),
+    (1,0,0),
+    (0,1,0),
+)
+
+triangle2Verticies = (
+    (1,1,1),
+    (2,1,1),
+    (1,2,1),
+)
+
+triangleColor = (0.7,0.1,1)
+
+
+if __name__=="__main__":
+        app = App()
+        app.speed = 1
+        triangle = Triangle(triangleVerticies)
+        triangle.color = triangleColor
+        app.render.append(triangle)
+        app.run()
