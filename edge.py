@@ -1,8 +1,11 @@
+from app import App
+
 from OpenGL.GL import *
+from cube2 import CubesOnSpace
 
 from vector import Vector3d
 
-import math
+
 
 class Edge:
     def __init__(self, verticies):
@@ -43,4 +46,19 @@ class Edge:
         if abs(self.angle.z) >= 360:
             self.angle.z = 0
         
-        
+
+edgeVerticies = (
+    (0,0,0),
+    (1,1,0)
+)
+
+edgeColor = (0.5,0.5,0.5)
+
+
+if __name__=="__main__":
+        app = App()
+        app.speed = 1
+        edge = Edge(edgeVerticies)
+        edge.color = edgeColor
+        app.render.append(edge)
+        app.run()

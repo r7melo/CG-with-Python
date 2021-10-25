@@ -4,119 +4,96 @@ from pygame.locals import *
 from OpenGL.GL import *
 from OpenGL.GLU import *
 
-from cube import Cube
-from triangle import Triangle
-from edge import Edge
-from constants import *
-from vector import Vector3d
 
 class App:
     def __init__(self):
-        self.keyboard = None
-        self.display = (0, 0)
-        self.fovy = 0
-        self.aspect = 0
-        self.z_near = 0
-        self.z_far = 0
-        self.angle = 0
-        self.translation = Vector3d()
-        self.rotation = Vector3d()
-
-
+        self.rot = 0
+        self.render = []
+        self.speed = 3
+        self.sum_rot_updown = 0
+        self.current_mv_mat = (GLfloat * 16)()
+        self.screenSize = (1500, 800)
 
     def run(self):
         pygame.init()
-        pygame.display.set_mode(self.display, DOUBLEBUF | OPENGL)
-        gluPerspective(self.fovy, (self.display[0]/self.display[1]), self.z_near, self.z_far)
-        glTranslatef(self.translation.x, self.translation.y, self.translation.z)
 
-        #============================================================================
-        cube = Cube(cuboVerticies, cuboFaces)
-
-
-        triangle = Triangle(triangleVerticies)
-        triangle.color = triangleColor
-
-        triangle2 = Triangle(triangle2Verticies)
-        triangle2.color = (0.1,1,0)
-
-        edge = Edge(edgeVerticies)
-        edge.color = edgeColor
         
-        #============================================================================
+        pygame.display.set_mode(self.screenSize, DOUBLEBUF | OPENGL)
+
+        clock = pygame.time.Clock()
+
+        glMatrixMode(GL_PROJECTION)
+        gluPerspective(45, (self.screenSize[0] / self.screenSize[1]), 0.1, 50.0)
+        glMatrixMode(GL_MODELVIEW)
+
+        rot = 0
+        render = []
+        speed = 3
+        sum_rot_updown = 0
+        current_mv_mat = (GLfloat * 16)()
         
+
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
                     quit()
 
+            pressed = pygame.key.get_pressed()
+
+            if pressed[pygame.K_ESCAPE]:
+                pygame.quit()
+                quit()
+
+            glGetFloatv(GL_MODELVIEW_MATRIX, current_mv_mat)
+            glLoadIdentity()
+
+            # Rotation Right and Left
+            if pressed[pygame.K_LEFT]:
+                glRotatef(speed / 2, 0, -1, 0)
+                rot += 1
+
+            if pressed[pygame.K_RIGHT]:
+                glRotatef(speed / 2, 0, 1, 0)
+                rot -= 1
+
+            # Walk with WASD
+            if pressed[pygame.K_w]:
+                glTranslate(0, 0, 1 / speed)
+            if pressed[pygame.K_s]:
+                glTranslate(0, 0, -1 / speed)
+            if pressed[pygame.K_a]:
+                glTranslate(1 / speed, 0, 0)
+            if pressed[pygame.K_d]:
+                glTranslate(-1 / speed, 0, 0)
+
+            # Walk Up and Down With ESPACE and SHIFT
+            if pressed[pygame.K_SPACE]:
+                glTranslate(0, -1 / speed, 0)
+            if pressed[pygame.K_LSHIFT]:
+                glTranslate(0, 1 / speed, 0)
+
+            glMultMatrixf(current_mv_mat)
+
+            # Rotation Up and Down
+            if pressed[pygame.K_UP]:
+                sum_rot_updown -= speed / 2
+            if pressed[pygame.K_DOWN]:
+                sum_rot_updown += speed / 2
+
+            glPushMatrix()
+
+            glGetFloatv(GL_MODELVIEW_MATRIX, current_mv_mat)
+            glLoadIdentity()
+            glRotatef(sum_rot_updown, 1, 0, 0)
+            glMultMatrixf(current_mv_mat)
+
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
-            #glRotatef(1, 1,1,0)
-
-            glBegin(GL_LINES)
-            glColor3fv((0,0,0.1))
-            glVertex3fv((0,0,-10))
-            glVertex3fv((0,0,10))
             
-            glColor3fv((0,0.1,0))
-            glVertex3fv((0,-10,0))
-            glVertex3fv((0,10,0))
+            for render in self.render:
+                render.update()
 
-            glColor3fv((0.1,0,0))
-            glVertex3fv((-10,0,0))
-            glVertex3fv((10,0,0))
-            glEnd()
-            
-            
-            #============================================================================
-            
-            cube.update()
-
-
-            #============================================================================
-
-            keys = pygame.key.get_pressed()
-        
-            if keys[K_w]:
-                edge.angle.x += 10
-            elif keys[K_s]:
-                edge.angle.x -= 10
-            if keys[K_d]:
-                edge.angle.z += 10
-            elif keys[K_a]:
-                edge.angle.z -= 10
-            if keys[K_q]:
-                edge.angle.y += 10
-            elif keys[K_e]:
-                edge.angle.y -= 10
-
-
-            if keys[K_UP]:
-                glRotatef(10,1,0,0)
-            elif keys[K_DOWN]:
-                glRotatef(10,-1,0,0)
-            if keys[K_LEFT]:
-                glRotatef(10,0,1,0)
-            elif keys[K_RIGHT]:
-                glRotatef(10,0,-1,0)
-                
+            glPopMatrix()
 
             pygame.display.flip()
-            pygame.time.wait(100)
-
-
-
-
-if "__main__"==__name__:
-    from app import App
-    from vector import Vector3d
-
-    app = App()
-
-    app.display = (1000,1000)
-    app.fovy = 45
-    app.z_near = 1
-    app.z_far = 100
-    app.translation = Vector3d(0, 0, -5)
-    app.run()
+            clock.tick(60)

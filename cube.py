@@ -2,7 +2,6 @@ from OpenGL.GL import *
 
 from vector import Vector3d
 
-import math
 
 class Cube:
     def __init__(self, verticies, faces):
