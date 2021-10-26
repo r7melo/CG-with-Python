@@ -1,9 +1,11 @@
+from pygame.constants import K_DELETE, K_END, K_HOME, K_KP_ENTER, K_PAGEDOWN, K_o
 from app import App
 
 from OpenGL.GL import *
-from cube2 import CubesOnSpace
 
 from vector import Vector3d
+
+import pygame
 
 
 
@@ -33,11 +35,26 @@ class Edge:
             glVertex3fv(vertex)
         glEnd()
         
+    def keyboard(self):
+        pressed = pygame.key.get_pressed()
+        
+        # Move Up and Down Y
+        if pressed[K_HOME]:
+            self.angle.y += 10
+        if pressed[K_END]:
+            self.angle.y -= 10
+
+        # Move Right and Left X 
+        if pressed[K_DELETE]:
+            self.angle.x += 10
+        if pressed[K_PAGEDOWN]:
+            self.angle.x -= 10
 
 
     def update(self):
         self.show()
         self.rotate()
+        self.keyboard()
 
         if abs(self.angle.x) >= 360:
             self.angle.x = 0

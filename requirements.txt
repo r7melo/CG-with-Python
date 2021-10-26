@@ -1,2 +1,2 @@
 pygame
-PyOpenGLp
+PyOpenGL

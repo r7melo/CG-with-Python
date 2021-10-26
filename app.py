@@ -89,11 +89,11 @@ class App:
             # Rotation Right and Left with Mouse
             if pygame.mouse.get_pressed()[0]:
                 if mouse_rel[0] < 0:
-                    glRotatef(self.speed / 2, 0, 1, 0)
-                    self.rot -= 1
-                elif mouse_rel[0] > 0:
                     glRotatef(self.speed / 2, 0, -1, 0)
                     self.rot += 1
+                elif mouse_rel[0] > 0:
+                    glRotatef(self.speed / 2, 0, 1, 0)
+                    self.rot -= 1
             
 
             glPushMatrix()
