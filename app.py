@@ -103,7 +103,7 @@ class App:
             glRotatef(self.sum_rot_updown, 1, 0, 0)
             glMultMatrixf(self.current_mv_mat)
 
-            #glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
             
             for render in self.render:
                 render.update()

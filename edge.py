@@ -20,17 +20,16 @@ class Edge:
     def rotate(self):
         new_verticies = []
 
-        vector = Vector3d(1,1,0)
+        
 
-        vector.x = (vector.x * math.cos((self.angle.z/180)*math.pi)) - (vector.y * math.sin((self.angle.z/180)*math.pi))
-        vector.y = (vector.x * math.sin((self.angle.z/180)*math.pi)) + (vector.y * math.cos((self.angle.z/180)*math.pi))
+        for vertex in self.__verticies__:
+            vector = Vector3d(vertex[0], vertex[1], vertex[2])
+            vector.rotate(self.angle, Vector3d(0.5,0.5,0.5))
+            new_verticies.append(vector.get())
+
         self.angle.z += 1
-
-
-        new_verticies.append((0,0,0))
-        new_verticies.append(vector.get())
-
-        print(vector.get())
+    
+        print(new_verticies)
         
         self.verticies = tuple(new_verticies)
             
@@ -73,9 +72,19 @@ class Edge:
             self.angle.z = 0
         
 
-edgeVerticies = (
+edgeVerticies1 = (
     (0,0,0),
-    (1,1,0)
+    (1,0,0)
+)
+
+edgeVerticies2 = (
+    (0,0,0),
+    (0,1,0)
+)
+
+edgeVerticies3 = (
+    (0,0,0),
+    (0,0,1)
 )
 
 edgeColor = (0.5,0.5,0.5)
@@ -84,8 +93,14 @@ edgeColor = (0.5,0.5,0.5)
 if __name__=="__main__":
         from cartesian_plane import CartesianPlane
         app = App()
-        edge = Edge(edgeVerticies)
-        edge.color = edgeColor
+
+        edge1 = Edge(edgeVerticies1)
+        edge2 = Edge(edgeVerticies2)
+        edge3 = Edge(edgeVerticies3)
+
         app.render.append(CartesianPlane())
-        app.render.append(edge)
+        app.render.append(edge1)
+        app.render.append(edge2)
+        app.render.append(edge3)
+
         app.run()

@@ -18,8 +18,9 @@ class Triangle:
 
         for vertex in self.__verticies__:
             vector = Vector3d(vertex[0], vertex[1], vertex[2])
-            vector.rotate(self.angle)
+            vector.rotate(self.angle, Vector3d())
             new_verticies.append(vector.get())
+            print(new_verticies)
             
         self.verticies = tuple(new_verticies)
 
@@ -47,6 +48,8 @@ class Triangle:
             self.angle.y = 0
         if abs(self.angle.z) >= 360:
             self.angle.z = 0
+
+        print(self.verticies)
         
         
 
@@ -67,9 +70,11 @@ triangleColor = (0.7,0.1,1)
 
 
 if __name__=="__main__":
+        from cartesian_plane import CartesianPlane
         app = App()
         app.speed = 1
         triangle = Triangle(triangleVerticies)
         triangle.color = triangleColor
+        app.render.append(CartesianPlane())
         app.render.append(triangle)
         app.run()

@@ -11,20 +11,32 @@ class Vector3d:
         self.y += vector.y
         self.z += vector.z
 
-    def rotate(self, angle):
+    def rotate(self, angle, center):
+        new_vector = Vector3d()
 
+        
         if abs(angle.x) > 0:
-            self.y = (self.y * math.cos((angle.x/180)*math.pi)) - (self.z * math.sin((angle.x/180)*math.pi))
-            self.z = (self.y * math.sin((angle.x/180)*math.pi)) + (self.z * math.cos((angle.x/180)*math.pi))
-        if abs(angle.y) > 0:
-            self.x = (self.x * math.cos((angle.y/180)*math.pi)) - (self.z * math.sin((angle.y/180)*math.pi))
-            self.z = (self.z * math.sin((angle.y/180)*math.pi)) + (self.z * math.cos((angle.y/180)*math.pi))
-        if abs(angle.z) > 0:
-            x = (self.y * math.cos((self.angle.z/180)*math.pi)) - (self.x * math.sin((self.angle.z/180)*math.pi))
-            y = (self.y * math.sin((self.angle.z/180)*math.pi)) + (self.x * math.cos((self.angle.z/180)*math.pi))
+            new_vector.z = ((self.y-center.y) * math.cos((angle.x/180)*math.pi)) - ((self.z-center.z) * math.sin((angle.x/180)*math.pi))
+            new_vector.y = ((self.y-center.y)* math.sin((angle.x/180)*math.pi)) + ((self.z-center.z) * math.cos((angle.x/180)*math.pi))
+            self.z = center.z + new_vector.z
+            self.y = center.y + new_vector.y
 
-            self.x = vector.x
-            self.y = vector.
+
+        if abs(angle.y) > 0:
+            new_vector.x = ((self.z-center.z) * math.cos((angle.y/180)*math.pi)) - ((self.x-center.x) * math.sin((angle.y/180)*math.pi))
+            new_vector.z = ((self.z-center.z)* math.sin((angle.y/180)*math.pi)) + ((self.x-center.x) * math.cos((angle.y/180)*math.pi))
+            self.x = center.x + new_vector.x
+            self.z = center.z + new_vector.z
+            
+
+        if abs(angle.z) > 0:
+            new_vector.x = ((self.y-center.y) * math.cos((angle.z/180)*math.pi)) - ((self.x-center.x) * math.sin((angle.z/180)*math.pi))
+            new_vector.y = ((self.y-center.y)* math.sin((angle.z/180)*math.pi)) + ((self.x-center.x) * math.cos((angle.z/180)*math.pi))
+            self.x = center.x + new_vector.x
+            self.y = center.y + new_vector.y
+        
+        
+
 
     def get(self):
         return (self.x, self.y, self.z)
