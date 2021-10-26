@@ -6,14 +6,12 @@ from vector import Vector3d
 
 
 class Cube:
-    def __init__(self, verticies, faces, colors):
+    def __init__(self, verticies, faces):
         self.__verticies__ = verticies
         self.verticies = verticies
         self.faces = list(faces)
-        self.colors = colors
+        self.color = (1,1,1)
         self.angle = Vector3d(0,0,0)
-        self.render = list(range(len(faces)))
-        self.inverte_x = True
 
     def rotate(self):
         new_verticies = []
@@ -33,26 +31,15 @@ class Cube:
 
 
     def show(self):
-        if 180 <= self.inverte_x and abs(self.angle.x) <= 360:
-            A = self.render[0]
-            B = self.render[1]
-            self.render[0] = B
-            self.render[1] = A
-            self.inverte_x = False
-        else:
-            self.inverte_x = True
-
-
         glBegin(GL_QUADS)
-        for face in range(len(self.faces)):
-            glColor3fv(self.colors[self.render[face]])
-            for vertex in self.faces[face]:
-                glVertex3fv(self.verticies[vertex])
+        for face in self.faces:
+            for vertex in face:
+                if type(vertex) == tuple:
+                    glColor3fv(vertex)
+                elif type(vertex) == int:
+                    glVertex3fv(self.verticies[vertex])
         glEnd()
-
-        print(self.angle.get())
         
-
 
 
     def update(self):
@@ -60,11 +47,9 @@ class Cube:
         self.rotate()
 
         self.angle.y += 1
-        self.angle.x += 0.2
+        self.angle.x += 0.1
         #self.angle.y += 0.1
         #self.angle.x += 0.1
-
-        print(self.render)
 
         
 
@@ -82,16 +67,9 @@ cuboVerticies = (
 )
 
 cuboFaces = (
-    (4,5,6,7),    #1
-    (0,1,2,3),    #3
+    ((0.1,0.1,0.1),4,5,6,7),    #1
+    ((1,0,0),0,1,2,3),          #3
 )
-
-cuboColors = (
-    (1,0,0),   
-    (0,1,0),   
-)
-
-
 
 cuboFacesbc= (
     ((1,0,0),0,1,2,3),          #3
@@ -102,12 +80,10 @@ cuboFacesbc= (
     ((0.1,0.1,0.1),4,5,6,7),    #1
 )
 
-
-
 if __name__=="__main__":
         from cartesian_plane import CartesianPlane
         app = App()
         app.screenSize = (1500,900)
         app.render.append(CartesianPlane())
-        app.render.append(Cube(cuboVerticies, cuboFaces, cuboColors))
+        app.render.append(Cube(cuboVerticies, cuboFacesbc))
         app.run()

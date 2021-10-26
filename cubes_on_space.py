@@ -44,7 +44,7 @@ class CubesOnSpace:
 	def update(self):
 		for i in range(8):
 			for j in range(8):
-				Cube(-i * 2.5, -4, -j * 2.5)
+				Cube(-i , -4, -j )
 
 if __name__=="__main__":
 	app = App()

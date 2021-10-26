@@ -23,7 +23,9 @@ class App:
 
         glMatrixMode(GL_PROJECTION)
         gluPerspective(45, (self.screenSize[0] / self.screenSize[1]), 0.1, 50.0)
-        glMatrixMode(GL_MODELVIEW)        
+        glMatrixMode(GL_MODELVIEW)   
+        glEnable(GL_DEPTH_TEST)
+
 
         while True:
             for event in pygame.event.get():
