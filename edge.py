@@ -1,12 +1,13 @@
-from pygame.constants import K_DELETE, K_END, K_HOME, K_KP_ENTER, K_PAGEDOWN, K_o
+from pygame.constants import K_DELETE, K_END, K_HOME, K_PAGEDOWN
 from app import App
 
 from OpenGL.GL import *
+from cartesian_plane import CartesianPlane
 
 from vector import Vector3d
 
 import pygame
-
+import math
 
 
 class Edge:
@@ -19,12 +20,20 @@ class Edge:
     def rotate(self):
         new_verticies = []
 
-        for vertex in self.__verticies__:
-            vector = Vector3d(vertex[0], vertex[1], vertex[2])
-            vector.rotate(self.angle)
-            new_verticies.append(vector.get())
-            
+        vector = Vector3d(1,1,0)
+
+        vector.x = (vector.x * math.cos((self.angle.z/180)*math.pi)) - (vector.y * math.sin((self.angle.z/180)*math.pi))
+        vector.y = (vector.x * math.sin((self.angle.z/180)*math.pi)) + (vector.y * math.cos((self.angle.z/180)*math.pi))
+        self.angle.z += 1
+
+
+        new_verticies.append((0,0,0))
+        new_verticies.append(vector.get())
+
+        print(vector.get())
+        
         self.verticies = tuple(new_verticies)
+            
 
 
 
@@ -40,15 +49,15 @@ class Edge:
         
         # Move Up and Down Y
         if pressed[K_HOME]:
-            self.angle.y += 10
+            self.angle.y += 0.1
         if pressed[K_END]:
-            self.angle.y -= 10
+            self.angle.y -= 0.1
 
         # Move Right and Left X 
         if pressed[K_DELETE]:
-            self.angle.x += 10
+            self.angle.x -= 0.1
         if pressed[K_PAGEDOWN]:
-            self.angle.x -= 10
+            self.angle.x += 0.1
 
 
     def update(self):
@@ -73,9 +82,10 @@ edgeColor = (0.5,0.5,0.5)
 
 
 if __name__=="__main__":
+        from cartesian_plane import CartesianPlane
         app = App()
-        app.speed = 1
         edge = Edge(edgeVerticies)
         edge.color = edgeColor
+        app.render.append(CartesianPlane())
         app.render.append(edge)
         app.run()
