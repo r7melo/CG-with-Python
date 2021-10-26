@@ -49,5 +49,5 @@ class CubesOnSpace:
 if __name__=="__main__":
 	app = App()
 	cubes_on_space = CubesOnSpace()
-	app.render.append(cubes_on_space)
+	app.render.append(cubes_on_space) 
 	app.run()
