@@ -40,8 +40,8 @@ class Circle:
 
     def circle(self):
         angle = 0
-        dz = 1
-
+        dz = 10
+        rain = 5
 
         glBegin(GL_LINES)
         glColor3f(0,1,0.7)
@@ -49,8 +49,8 @@ class Circle:
         
         while 0 <= angle < 360:
 
-            glVertex3f(self.g(0,1,angle)[0], self.g(0,1,angle)[1], 0)
-            glVertex3f(self.g(0,1,angle+dz)[0], self.g(0,1,angle+dz)[1], 0)
+            glVertex3f(self.g(0,rain,angle)[0], self.g(0,rain,angle)[1], 0)
+            glVertex3f(self.g(0,rain,angle+dz)[0], self.g(0,rain,angle+dz)[1], 0)
 
             angle += dz
             
