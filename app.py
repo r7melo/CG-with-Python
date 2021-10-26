@@ -25,6 +25,7 @@ class App:
         gluPerspective(45, (self.screenSize[0] / self.screenSize[1]), 0.1, 50.0)
         glMatrixMode(GL_MODELVIEW)   
         glEnable(GL_DEPTH_TEST)
+        glTranslate(0, 0, -50 / self.speed)
 
 
         while True:
@@ -58,6 +59,7 @@ class App:
                 glTranslate(0, 0, 1 / self.speed)
             if pressed[pygame.K_s]:
                 glTranslate(0, 0, -1 / self.speed)
+                
             if pressed[pygame.K_a]:
                 glTranslate(1 / self.speed, 0, 0)
             if pressed[pygame.K_d]:
