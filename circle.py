@@ -38,7 +38,7 @@ class Circle:
             
         glEnd()
 
-    def circle(self):
+    def circle(self, angle_z=0):
         angle = 0
         dz = 10
         rain = 5
@@ -49,17 +49,27 @@ class Circle:
         
         while 0 <= angle < 360:
 
-            glVertex3f(self.g(0,rain,angle)[0], self.g(0,rain,angle)[1], 0)
-            glVertex3f(self.g(0,rain,angle+dz)[0], self.g(0,rain,angle+dz)[1], 0)
+            glVertex3f(self.g(0,rain,angle)[0], self.g(0,rain,angle)[1], angle_z)
+            glVertex3f(self.g(0,rain,angle+dz)[0], self.g(0,rain,angle+dz)[1], angle_z)
 
             angle += dz
             
         glEnd()
+
+    def esfera(self):
+        angle = 0
+        dy = 10
+
+        while 0 <= angle < 360:
+            self.circle(self.g(0,5,angle)[1])
+            angle += dy
+        
+
         
 
     def update(self):
         self.circle()
-        self.parabola()
+        self.esfera()
 
 
 if __name__=="__main__":
