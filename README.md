@@ -1,6 +1,6 @@
 # CG-with-Python
 
-##Configuração de ambiente virtual
+## Configuração de ambiente virtual
 - cmd$>  python -m venv venv
 - cmd$>  .\venv\Scripts\activate
 - (venv):  python -m pip install --upgrade pip
