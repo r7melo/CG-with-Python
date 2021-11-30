@@ -39,8 +39,28 @@ class Circle:
         
 
     def update(self):
-        self.circle(angle_y=self.rotation_y, angle_x=self.rotation_x, rain=5)
-        self.rotation_y += 1
+        # self.circle(angle_y=self.rotation_y, angle_x=self.rotation_x, rain=5)
+        # self.rotation_y += 1
+
+        ambiente = [1.0, 1.0, 1.0, 1.0]
+        glShadeModel(GL_FLAT)
+        glEnable(GL_COLOR_MATERIAL)
+        glLightfv (GL_LIGHT0, GL_AMBIENT, ambiente)
+        glEnable(GL_LIGHTING)
+        glEnable(GL_LIGHT0)
+        glEnable(GL_DEPTH_TEST)
+
+        especular = [1.0, 1.0, 1.0, 1.0]
+        position = [0.0, 3.0, 1.0, 0.0 ]
+        glShadeModel(GL_FLAT)
+        glEnable(GL_COLOR_MATERIAL)
+        glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, especular)
+        glMaterialf (GL_FRONT_AND_BACK, GL_SHININESS, 20.0)
+        glLightfv (GL_LIGHT0, GL_SPECULAR, especular)
+        glLightfv (GL_LIGHT0, GL_POSITION, position)
+        glEnable(GL_LIGHTING)
+        glEnable(GL_LIGHT0)
+        glEnable(GL_DEPTH_TEST)
 
 
 if __name__=="__main__":
