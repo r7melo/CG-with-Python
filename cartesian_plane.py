@@ -11,16 +11,16 @@ class CartesianPlane:
         glBegin(GL_LINES)
         # X
         glColor3f(0.3,0,0)
-        glVertex3f(-1000,0,0)
-        glVertex3f(1000,0,0)
+        glVertex3f(-10000,0,0)
+        glVertex3f(10000,0,0)
         # Y
         glColor3f(0,0.3,0)
         glVertex3f(0,-1000,0)
-        glVertex3f(0,1000,0)
+        glVertex3f(0,10000,0)
         # Z
         glColor3f(0,0,0.3)
-        glVertex3f(0,0,-1000)
-        glVertex3f(0,0,1000)
+        glVertex3f(0,0,-10000)
+        glVertex3f(0,0,10000)
 
         glEnd()
 

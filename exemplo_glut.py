@@ -1,4 +1,7 @@
 # -*- coding: latin1 -*-
+import math
+import pygame
+from pygame.locals import *
 from sys import argv
 from OpenGL.GL import *
 from OpenGL.GLU import *
@@ -6,10 +9,16 @@ from OpenGL.GLUT import *
 
 from past.builtins import xrange
 
+from cartesian_plane import CartesianPlane
+
 # Ângulo de rotação do objeto
-ar = 0.
+angle = 0.
 # Variação da rotação
-dr = 1.
+speed_angle = 1.
+# Valores cartesianos de rotacao
+angle_x = 0
+angle_y = 0
+angle_z = 0
 
 def resize(x, y):
     """
@@ -31,11 +40,40 @@ def resize(x, y):
     glMatrixMode(GL_MODELVIEW)
 
 
+# funcao de desenhar uma esfera
+def esfera(rain, nStacks, nSectors):
+    # geracao de pontos ==
+    pontos = []
+
+    deltaPhi = math.pi/nStacks
+    deltaTheta = 2*math.pi/nSectors
+
+    for i in xrange(nStacks):
+        phi = -math.pi/2*i*deltaPhi
+        temp = rain * math.cos(phi)
+        y = rain * math.sin(phi)
+        
+        for j in xrange(nSectors):
+            theta = j*deltaTheta
+            x =  temp*math.sin(theta)
+            z =  temp*math.cos(theta)
+
+            if z > 0: pontos.append((x,y,z))
+    
+    # geracao de pontos
+    glColor3f(1,0,0)
+    glPointSize(2.5)
+    glBegin(GL_POINTS)
+    for ponto in pontos:
+        glVertex3fv(ponto)
+    glEnd()
+
+
 def draw():
     """
     Função que desenha os objetos
     """
-    global ar, dr
+    global angle, angle_y, angle_x, angle_z
     # Limpa a janela e o buffer de profundidade
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)
     # Limpa a matriz de visualização
@@ -45,11 +83,12 @@ def draw():
     glTranslatef(-0.5, -0.5, -4.)
     # Rotação (em graus)
     # Parâmetros: graus, x, y e z (eixo)
-    glRotatef(ar, 1.0 , 1.0, 1.0)
+    glRotatef(angle, angle_x , angle_y, angle_z)
     # Mudança de escala
     # Parâmetros: x, y e z (tamanho)
-    glScalef(ar / 1000, ar / 1000, ar / 1000)
-    for i in xrange(0, 360, 10):
+    glScalef(1, 1, 1)
+
+    for i in xrange(0, 100, 10):
         # Rotação das faces do objeto
         glRotatef(10, 1.0 , 1.0, 1.0)
         # Inicia a criação de uma face retangular
@@ -68,10 +107,26 @@ def draw():
         # Termina a face
         glEnd()
 
+    #================================================================================================== criacao do poligono 
+
+    CartesianPlane().update()
+
+    glLoadIdentity()
+    glPushMatrix()
+    glTranslatef(-20, 0, -50)
+    glRotatef(angle, 0, 1, 0)
+    esfera(10, 50, 50)
+    glPopMatrix()
+    angle += 1
+
+    #================================================================================================== criacao do poligono
+
+
     # Inverte a variação
-    if ar > 1000: dr = -1
-    if ar < 1: dr = 1
-    ar = ar + dr
+    # if ar > 1000: dr = 0.01
+    # if ar < 1: dr = 1
+    # ar = ar + dr
+
     # Troca o buffer, exibindo o que acabou de ser usado
     glutSwapBuffers()
 
@@ -80,8 +135,20 @@ def keyboard(*args):
     Função callback para tratar eventos de teclado
     """
     # Testa se a tecla ESC foi apertada
-    if args[0] == '\33':
+    if args[0] == b'\x1b':
         raise SystemExit
+
+    global angle, speed_angle, angle_x, angle_z, angle_z
+    # Teclas de Rotacao do chunk
+    if args[0] == b'a':
+        angle += speed_angle
+    if args[0] == b'd':
+        angle -= speed_angle
+    if args[0] == b'w':
+        pass
+    if args[0] == b's':
+        pass
+    
 
 
 
@@ -122,7 +189,7 @@ if __name__ == '__main__':
     # Seleciona a matriz de projeção
     glMatrixMode(GL_PROJECTION)
     glLoadIdentity()
-    gluPerspective(45., 640. / 480., .1, 100.)
+    gluPerspective(15., 640. / 480., .1, 100.)
     # Seleciona a matriz de visualização
     glMatrixMode(GL_MODELVIEW)
     # Inicia o laço de eventos da GLUT
