@@ -8,7 +8,7 @@ class App:
     def __init__(self):
         self.rot = 0
         self.render = []
-        self.speed = 3
+        self.speed = 2
         self.sum_rot_updown = 0
         self.current_mv_mat = (GLfloat * 16)()
         self.screenSize = (500, 500)

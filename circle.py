@@ -6,10 +6,8 @@ from cartesian_plane import CartesianPlane
 
 from vector import Vector3d
 
-import pygame
 from math import *
 
-from cube import Cube
 
 class Circle:
     def __init__(self):
@@ -31,9 +29,6 @@ class Circle:
         spinx = (0,0)
         if angle_x > 0:
             spinx = self.spin(0,rain,angle_x)
-
-        
-        Cube(spiny[0] ,spiny[1], spinx[0])
         
 
         
