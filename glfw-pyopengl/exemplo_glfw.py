@@ -32,13 +32,13 @@ def main():
     glfw.make_context_current(window)
 
     # “Quero criar um shader para a etapa de processamento dos vértices.”
-    vertex_shader_source = load_shader_file("shaders/vertex_shader.glsl")
+    vertex_shader_source = load_shader_file("./glfw-pyopengl/shaders/vertex_shader.glsl")
     vertex_shader = glCreateShader(GL_VERTEX_SHADER)
     glShaderSource(vertex_shader, vertex_shader_source)
     glCompileShader(vertex_shader)
 
     # “Shader para processar os fragmentos (pixels) da imagem.”
-    fragment_shader_source = load_shader_file("shaders/fragment_shader.glsl")
+    fragment_shader_source = load_shader_file("./glfw-pyopengl/shaders/fragment_shader.glsl")
     fragment_shader = glCreateShader(GL_FRAGMENT_SHADER)
     glShaderSource(fragment_shader, fragment_shader_source)
     glCompileShader(fragment_shader)
