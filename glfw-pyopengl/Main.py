@@ -19,6 +19,7 @@ TARGET_FPS = 60
 def render_loop(window):
     # Ativar contexto OpenGL
     glfw.make_context_current(window)
+    glfw.swap_interval(1)
 
     vertex_shader = CompileShaderGPU("./glfw-pyopengl/shaders/vertex_shader.glsl", GL_VERTEX_SHADER)
     fragment_shader = CompileShaderGPU("./glfw-pyopengl/shaders/fragment_shader.glsl", GL_FRAGMENT_SHADER)
@@ -36,6 +37,19 @@ def render_loop(window):
         0.5,  0.5,   # Vértice 3
     ], dtype=np.float32)
 
+    positions = []
+    grid_size = 100
+    spacing = 2.0 / grid_size  # Porque tela vai de -1 a 1
+
+    offset = -1.0 + spacing / 2  # Começar no meio da primeira célula
+
+    for i in range(grid_size):
+        for j in range(grid_size):
+            x = offset + i * spacing
+            y = offset + j * spacing
+            positions.append((x, y))
+
+
 
     VAO = glGenVertexArrays(1)
     VBO = glGenBuffers(1)
@@ -51,6 +65,8 @@ def render_loop(window):
     glBindVertexArray(0)
 
     scale_loc = glGetUniformLocation(shader_program, "scale")
+    red_att = glGetUniformLocation(shader_program, "red")
+    position_loc = glGetUniformLocation(shader_program, "u_position")
 
     frame_duration = 1.0 / TARGET_FPS
     last_time = glfw.get_time()
@@ -62,21 +78,34 @@ def render_loop(window):
             last_time = current_time
             # roda a renderização
             
-            scale = (1 + math.sin(current_time)) / 2
+            scale =  (math.sin(current_time)+1)/(grid_size-0.1)
+            red =  (math.cos(current_time)+1)/(grid_size-0.1)
 
             glClearColor(0.1, 0.1, 0.1, 1)
             glClear(GL_COLOR_BUFFER_BIT)
 
             glUseProgram(shader_program)
-            glUniform1f(scale_loc, scale)
-
             glBindVertexArray(VAO)
-            glDrawArrays(GL_TRIANGLES, 0, 6)
+
+            for i, pos in enumerate(positions):
+                offset = i * 0.01  # atraso para o i-ésimo quadrado
+                scale = (math.sin(current_time + offset) + 1) / (grid_size - 0.1)
+                red = (math.cos(current_time + offset) + 1) / (grid_size - 0.1)
+                
+                glUniform2f(position_loc, pos[0], pos[1])
+                glUniform1f(scale_loc, scale)
+                glUniform1f(red_att, red)
+                glDrawArrays(GL_TRIANGLES, 0, 6)
 
             glfw.swap_buffers(window)
 
         else:
             time.sleep(frame_duration - elapsed)
+
+    glDeleteBuffers(1, [VBO])
+    glDeleteVertexArrays(1, [VAO])
+    glDeleteProgram(shader_program)
+
 
 
 def framebuffer_size_callback(window, width, height):
@@ -107,11 +136,6 @@ def main():
     while not glfw.window_should_close(window):
         glfw.poll_events()
         time.sleep(1/100)
-
-    
-
-    # Finalizar
-    glfw.terminate()
 
 
 if __name__=="__main__":
